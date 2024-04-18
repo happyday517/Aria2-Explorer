@@ -134,6 +134,9 @@ async function send2Aria(downloadItem, rpcItem) {
     remote.name = rpcItem.name;
     let aria2 = new Aria2(remote);
     let silent = Configs.keepSilent;
+    if (downloadItem.finalUrl.indexOf('huggingface.co') !== -1) {
+        options['all-proxy'] = 'http://127.0.0.1:1081'
+    }
     return aria2.addUri(downloadItem.url, options).then(function (response) {
         if (response && response.error) {
             return Promise.reject(response.error);
